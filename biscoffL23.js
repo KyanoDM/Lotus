@@ -11,19 +11,19 @@ function updateBiscoffL23() {
     // Standaard waarden
     const standaardCookieGewicht = 50.5; // g voor 5 koekjes
     const standaardCremePerKoekje = 3.1; // g crème per koekje
-    
+
     // Bereken de crème ratio op basis van koekjesgewicht
     const cookieRatio = cookieWeight / standaardCookieGewicht;
     const cremePerKoekje = standaardCremePerKoekje * cookieRatio;
     const cremePercentage = (cremePerKoekje * 5) / cookieWeight * 100;
-    
+
     // Max kg per creme type, aangepast voor koekjesgewicht
     const basisMaxKg = {
         biscoff: 1180,
         vanille: 1210,
         melkchocolade: 1240
     }[cremeType];
-    
+
     // Als koekjes zwaarder zijn, is er relatief minder crème nodig per koekje
     const maxKg = basisMaxKg * (standaardCookieGewicht / cookieWeight);
 
@@ -39,7 +39,7 @@ function updateBiscoffL23() {
     // Tijd nu + urenVoorraad
     let [uren, minuten] = tijdNu.split(/[.:]/).map(Number);
     let eindTijd = "--:--";
-    
+
     if (isNaN(uren) || isNaN(minuten)) {
         document.getElementById('resultaten').innerHTML = `
         <span style="color:red;">Ongeldige tijd invoer.</span>
@@ -49,7 +49,7 @@ function updateBiscoffL23() {
         document.getElementById('cremeTot').innerHTML = eindTijd;
         return;
     }
-    
+
     let totaalMinuten = uren * 60 + minuten + minutenVoorraad;
     let eindUur = Math.floor(totaalMinuten / 60) % 24;
     let eindMin = Math.round(totaalMinuten % 60);
@@ -59,7 +59,7 @@ function updateBiscoffL23() {
         <div style="margin-bottom:8px;"><b>Totale voorraad:</b> ${totaleVoorraad.toFixed(2)} kg</div>
         <div style="margin-bottom:8px;"><b>Voorraad crème:</b> ${minutenVoorraad.toFixed(2)} minuten (${urenVoorraad.toFixed(2)} uur)</div>
     `;
-    
+
     // Update Crème tot display
     document.getElementById('cremeTot').innerHTML = eindTijd;
 
@@ -95,6 +95,7 @@ function resetAllFields() {
     document.getElementById('beluchting').value = '';
     document.getElementById('hoyers').value = '';
     document.getElementById('verbreken').value = '';
+    document.getElementById('cookieWeight').value = '50.5'; // Reset naar standaard koekjesgewicht
     document.getElementById('tijdNu').value = '';
     updateBiscoffL23();
 }
@@ -108,7 +109,7 @@ function setCurrentTime() {
 // Event listeners voor alle inputs
 window.addEventListener('DOMContentLoaded', () => {
     // Invoervelden
-    ['cremeType', 'premix', 'beluchting', 'hoyers', 'verbreken', 'tijdNu'].forEach(id => {
+    ['cremeType', 'premix', 'beluchting', 'hoyers', 'verbreken', 'cookieWeight', 'tijdNu'].forEach(id => {
         document.getElementById(id).addEventListener('input', updateBiscoffL23);
     });
 
