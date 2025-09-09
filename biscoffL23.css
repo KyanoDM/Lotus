@@ -89,6 +89,7 @@ main {
     margin: 0 20px;
     flex: 1;
     max-width: 380px;
+    min-height: 640px; /* Set a fixed minimum height for both */
 }
 
 .resultaten-box {
@@ -142,6 +143,14 @@ main {
 .form-group label {
     font-size: 1.15rem;
     font-weight: 500;
+}
+
+.form-group .hint {
+    display: block;
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 4px;
+    font-style: italic;
 }
 
 .tanks-container {

@@ -5,14 +5,27 @@ function updateBiscoffL23() {
     const beluchting = Math.min(100, Math.max(0, Number(document.getElementById('beluchting').value)));
     const hoyers = Math.max(0, Number(document.getElementById('hoyers').value));
     const verbreken = Math.max(0, Number(document.getElementById('verbreken').value));
+    const cookieWeight = Math.max(0, Number(document.getElementById('cookieWeight').value || 50.5));
     const tijdNu = document.getElementById('tijdNu').value.trim();
 
-    // Max kg per creme type
-    const maxKg = {
+    // Standaard waarden
+    const standaardCookieGewicht = 50.5; // g voor 5 koekjes
+    const standaardCremePerKoekje = 3.1; // g crème per koekje
+    
+    // Bereken de crème ratio op basis van koekjesgewicht
+    const cookieRatio = cookieWeight / standaardCookieGewicht;
+    const cremePerKoekje = standaardCremePerKoekje * cookieRatio;
+    const cremePercentage = (cremePerKoekje * 5) / cookieWeight * 100;
+    
+    // Max kg per creme type, aangepast voor koekjesgewicht
+    const basisMaxKg = {
         biscoff: 1180,
         vanille: 1210,
         melkchocolade: 1240
     }[cremeType];
+    
+    // Als koekjes zwaarder zijn, is er relatief minder crème nodig per koekje
+    const maxKg = basisMaxKg * (standaardCookieGewicht / cookieWeight);
 
     // Voorraad berekening
     const voorraadPremix = (premix / 100) * maxKg;
