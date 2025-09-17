@@ -211,20 +211,6 @@ main {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
-.tank-percentage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2rem;
-    font-weight: bold;
-    color: rgba(178, 34, 34, 0.7);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    z-index: 10;
-    pointer-events: none;
-    transition: color 0.3s ease;
-}
-
 .tank-premix,
 .tank-beluchting {
     width: 300px;
@@ -438,4 +424,18 @@ input[type="text"] {
     .tank-big-container {
         margin: 20px 0;
     }
+}
+
+.tank-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.308);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    pointer-events: none;
+    transition: color 0.3s ease;
 }
