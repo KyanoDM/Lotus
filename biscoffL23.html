@@ -10,10 +10,17 @@
 
 <body>
     <header>
-        <a href="dashboard.html">
-            <img src="img/Lotus_logo_padding_1200x1200.jpg" alt="Lotus Logo" class="logo">
-        </a>
-        <h1>Biscoff Sandwich L23 - Crème Voorraad</h1>
+        <div class="header-left">
+            <a href="dashboard.html">
+                <img src="img/Lotus_logo_padding_1200x1200.jpg" alt="Lotus Logo" class="logo">
+            </a>
+            <h1>Biscoff Sandwich <span id="currentLine">L23</span> - Crème Voorraad</h1>
+        </div>
+        <div class="line-switch">
+            <button class="line-btn" data-line="L22" id="btnL22">L22</button>
+            <button class="line-btn active" data-line="L23" id="btnL23">L23</button>
+            <button class="line-btn" data-line="L24" id="btnL24">L24</button>
+        </div>
     </header>
     <main>
         <div class="biscoff-flex ">

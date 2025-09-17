@@ -12,6 +12,13 @@ header {
     padding: 1.5rem 2.5rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 2.5rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
     gap: 2.5rem;
 }
 
@@ -21,6 +28,43 @@ header {
 
 h1 {
     font-size: 2.2rem;
+}
+
+.line-switch {
+    display: flex;
+    gap: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    border-radius: 25px;
+}
+
+.line-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 50px;
+}
+
+.line-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.line-btn.active {
+    background-color: white;
+    color: #b22222;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.line-btn.active:hover {
+    background-color: #f5f5f5;
+    color: #b22222;
 }
 
 main {

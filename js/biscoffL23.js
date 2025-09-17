@@ -177,6 +177,42 @@ window.addEventListener('DOMContentLoaded', () => {
     // Huidige tijd knop
     document.getElementById('nowButton').addEventListener('click', setCurrentTime);
 
+    // Line switch functionaliteit
+    const lineButtons = document.querySelectorAll('.line-btn');
+    const currentLineSpan = document.getElementById('currentLine');
+
+    lineButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const selectedLine = this.getAttribute('data-line');
+
+            // Verwijder active class van alle buttons
+            lineButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Voeg active class toe aan geselecteerde button
+            this.classList.add('active');
+
+            // Update de titel
+            currentLineSpan.textContent = selectedLine;
+
+            // Optioneel: Sla de keuze op in localStorage
+            localStorage.setItem('selectedLine', selectedLine);
+
+            console.log(`Switched to line: ${selectedLine}`);
+        });
+    });
+
+    // Laad opgeslagen line keuze bij opstarten
+    const savedLine = localStorage.getItem('selectedLine');
+    if (savedLine && ['L22', 'L23', 'L24'].includes(savedLine)) {
+        // Update de UI naar opgeslagen keuze
+        lineButtons.forEach(btn => btn.classList.remove('active'));
+        const savedButton = document.querySelector(`[data-line="${savedLine}"]`);
+        if (savedButton) {
+            savedButton.classList.add('active');
+            currentLineSpan.textContent = savedLine;
+        }
+    }
+
     // Initialisatie
     updateBiscoffL23();
 });
