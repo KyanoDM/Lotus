@@ -180,21 +180,50 @@ window.addEventListener('DOMContentLoaded', () => {
     // Line switch functionaliteit
     const lineButtons = document.querySelectorAll('.line-btn');
     const currentLineSpan = document.getElementById('currentLine');
+    const switchBackground = document.querySelector('.line-switch-bg');
+    
+    // Functie om de sliding background te positioneren
+    function updateSwitchBackground(activeButton) {
+        const buttonIndex = Array.from(lineButtons).indexOf(activeButton);
+        let translateX = buttonIndex * 62.5; // 50px button width + 5px gap
+        
+        // Kleine correctie voor L22 positie
+        if (buttonIndex === 0) { // L22 is de eerste button
+            translateX += 3; // 3px naar rechts voor betere uitlijning
+        }
+        
+        switchBackground.style.transform = `translateX(${translateX}px)`;
+    }
+    
+    // Initiële positie van de background (voor L23 als default)
+    const initialActiveButton = document.querySelector('.line-btn.active');
+    if (initialActiveButton) {
+        updateSwitchBackground(initialActiveButton);
+    }
 
     lineButtons.forEach(button => {
         button.addEventListener('click', function () {
             const selectedLine = this.getAttribute('data-line');
 
             // Verwijder active class van alle buttons
-            lineButtons.forEach(btn => btn.classList.remove('active'));
+            lineButtons.forEach(btn => {
+                btn.classList.remove('active');
+            });
 
             // Voeg active class toe aan geselecteerde button
             this.classList.add('active');
+            
+            // Slide de background naar de nieuwe positie
+            updateSwitchBackground(this);
 
-            // Update de titel
-            currentLineSpan.textContent = selectedLine;
+            // Update de titel met fade effect
+            currentLineSpan.style.opacity = '0.5';
+            setTimeout(() => {
+                currentLineSpan.textContent = selectedLine;
+                currentLineSpan.style.opacity = '1';
+            }, 200);
 
-            // Optioneel: Sla de keuze op in localStorage
+            // Sla de keuze op in localStorage
             localStorage.setItem('selectedLine', selectedLine);
 
             console.log(`Switched to line: ${selectedLine}`);
@@ -210,6 +239,8 @@ window.addEventListener('DOMContentLoaded', () => {
         if (savedButton) {
             savedButton.classList.add('active');
             currentLineSpan.textContent = savedLine;
+            // Positioneer de background correct
+            updateSwitchBackground(savedButton);
         }
     }
 
