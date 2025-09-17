@@ -97,6 +97,33 @@
         </div>
 
     </main>
+
+    <!-- Firebase Configuration -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC36ApgZDM20hqLyOJHnEVgAORCE_LLfcI",
+            authDomain: "lotusdatabase-1.firebaseapp.com",
+            projectId: "lotusdatabase-1",
+            storageBucket: "lotusdatabase-1.firebasestorage.app",
+            messagingSenderId: "60330861484",
+            appId: "1:60330861484:web:e41c3313744f027a759009",
+            measurementId: "G-0LE4T8Z7Q9"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make Firebase available globally
+        window.firebaseDB = db;
+        window.firestoreFunctions = { collection, doc, setDoc, getDoc, serverTimestamp };
+    </script>
+
     <script src="js/biscoffL23.js"></script>
 </body>
 

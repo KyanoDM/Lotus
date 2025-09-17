@@ -177,24 +177,118 @@ window.addEventListener('DOMContentLoaded', () => {
     // Huidige tijd knop
     document.getElementById('nowButton').addEventListener('click', setCurrentTime);
 
+    // Firebase save functionaliteit
+    async function saveToFirebase() {
+        if (!window.firebaseDB) {
+            console.error('Firebase not initialized yet');
+            return;
+        }
+
+        try {
+            // Huidige lijn ophalen
+            const currentLine = document.getElementById('currentLine').textContent;
+
+            // Alle form data verzamelen
+            const formData = {
+                cremeType: document.getElementById('cremeType').value,
+                premix: Number(document.getElementById('premix').value) || 0,
+                beluchting: Number(document.getElementById('beluchting').value) || 0,
+                hoyers: Number(document.getElementById('hoyers').value) || 0,
+                verbreken: Number(document.getElementById('verbreken').value) || 0,
+                cookieWeight: Number(document.getElementById('cookieWeight').value) || 50.5,
+                tijdNu: document.getElementById('tijdNu').value,
+                timestamp: window.firestoreFunctions.serverTimestamp(),
+                lastUpdated: new Date().toLocaleString('nl-NL')
+            };
+
+            // Save naar Firebase in structuur: cremevoorraad/[L22|L23|L24]
+            const docRef = window.firestoreFunctions.doc(window.firebaseDB, 'cremevoorraad', currentLine);
+            await window.firestoreFunctions.setDoc(docRef, formData);
+
+            console.log(`Data saved to Firebase for ${currentLine}:`, formData);
+
+        } catch (error) {
+            console.error('Error saving to Firebase:', error);
+        }
+    }
+
+
+
+    // Auto-save wanneer waarden veranderen
+    const formInputs = ['cremeType', 'premix', 'beluchting', 'hoyers', 'verbreken', 'cookieWeight', 'tijdNu'];
+    formInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('change', () => {
+                setTimeout(saveToFirebase, 500); // Kleine delay om typing te voorkomen
+            });
+        }
+    });
+
+    // Firebase load functionaliteit
+    async function loadFromFirebase(lineToLoad) {
+        if (!window.firebaseDB) {
+            console.log('Firebase not initialized yet, skipping load');
+            return;
+        }
+
+        try {
+            const docRef = window.firestoreFunctions.doc(window.firebaseDB, 'cremevoorraad', lineToLoad);
+            const docSnap = await window.firestoreFunctions.getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                console.log(`Loading data for ${lineToLoad}:`, data);
+
+                // Vul form in met opgehaalde data (stil zonder events triggeren)
+                const cremeType = document.getElementById('cremeType');
+                const premix = document.getElementById('premix');
+                const beluchting = document.getElementById('beluchting');
+                const hoyers = document.getElementById('hoyers');
+                const verbreken = document.getElementById('verbreken');
+                const cookieWeight = document.getElementById('cookieWeight');
+                const tijdNu = document.getElementById('tijdNu');
+
+                // Update waarden zonder change events
+                cremeType.value = data.cremeType || 'biscoff';
+                premix.value = data.premix || 0;
+                beluchting.value = data.beluchting || 0;
+                hoyers.value = data.hoyers || 0;
+                verbreken.value = data.verbreken || 0;
+                cookieWeight.value = data.cookieWeight || 50.5;
+                tijdNu.value = data.tijdNu || '';
+
+                // Eenmalig update berekeningen na alle waarden zijn geladen
+                setTimeout(() => updateBiscoffL23(), 50);
+
+            } else {
+                console.log(`No data found for ${lineToLoad}, using defaults`);
+                // Reset naar default waarden
+                resetAllFields();
+            }
+        } catch (error) {
+            console.error(`Error loading data for ${lineToLoad}:`, error);
+        }
+    }
+
     // Line switch functionaliteit
     const lineButtons = document.querySelectorAll('.line-btn');
     const currentLineSpan = document.getElementById('currentLine');
     const switchBackground = document.querySelector('.line-switch-bg');
-    
+
     // Functie om de sliding background te positioneren
     function updateSwitchBackground(activeButton) {
         const buttonIndex = Array.from(lineButtons).indexOf(activeButton);
         let translateX = buttonIndex * 62.5; // 50px button width + 5px gap
-        
+
         // Kleine correctie voor L22 positie
         if (buttonIndex === 0) { // L22 is de eerste button
             translateX += 3; // 3px naar rechts voor betere uitlijning
         }
-        
+
         switchBackground.style.transform = `translateX(${translateX}px)`;
     }
-    
+
     // Initiële positie van de background (voor L23 als default)
     const initialActiveButton = document.querySelector('.line-btn.active');
     if (initialActiveButton) {
@@ -202,8 +296,14 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     lineButtons.forEach(button => {
-        button.addEventListener('click', function () {
+        button.addEventListener('click', async function () {
             const selectedLine = this.getAttribute('data-line');
+            const currentActiveLine = document.querySelector('.line-btn.active')?.getAttribute('data-line');
+
+            // Save huidige lijn data voordat we switchen
+            if (currentActiveLine && currentActiveLine !== selectedLine) {
+                await saveToFirebase();
+            }
 
             // Verwijder active class van alle buttons
             lineButtons.forEach(btn => {
@@ -212,15 +312,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
             // Voeg active class toe aan geselecteerde button
             this.classList.add('active');
-            
+
             // Slide de background naar de nieuwe positie
             updateSwitchBackground(this);
 
             // Update de titel met fade effect
             currentLineSpan.style.opacity = '0.5';
-            setTimeout(() => {
+            setTimeout(async () => {
                 currentLineSpan.textContent = selectedLine;
                 currentLineSpan.style.opacity = '1';
+
+                // Laad data voor nieuwe lijn
+                await loadFromFirebase(selectedLine);
             }, 200);
 
             // Sla de keuze op in localStorage
@@ -244,6 +347,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initialisatie
+    // Initialisatie met Firebase data loading
+    // Eerst een snelle update om iets te tonen
     updateBiscoffL23();
+
+    // Dan Firebase data laden (korter delay)
+    setTimeout(() => {
+        const currentActiveLine = document.querySelector('.line-btn.active')?.getAttribute('data-line') || 'L23';
+        loadFromFirebase(currentActiveLine);
+    }, 300);
 });
