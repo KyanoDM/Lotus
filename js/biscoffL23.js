@@ -52,10 +52,10 @@ function updateBiscoffL23() {
     // Voorraad berekening met pumping logica - laatste 10% is onbruikbaar
     let voorraadPremix = premix > 10 ? ((premix - 10) / 100) * maxKg : 0;
     let voorraadBeluchting = beluchting > 10 ? ((beluchting - 10) / 100) * maxKg : 0;
-    
+
     // Store original premix voor "leeg om" berekening
     const oorspronkelijkeVoorraadPremix = voorraadPremix;
-    
+
     console.log(`Debug: premix=${premix}%, beluchting=${beluchting}%, maxKg=${maxKg}`);
     console.log(`Debug: voorraadPremix=${voorraadPremix}kg, voorraadBeluchting=${voorraadBeluchting}kg`);
 
@@ -69,7 +69,7 @@ function updateBiscoffL23() {
         // Pompt altijd 10% van premix over (als er genoeg is)
         const availableInPremix = premix > 10 ? premix - 10 : 0; // Laatste 10% is onbruikbaar
         const ruimteInBeluchting = 100 - beluchting; // Hoeveel % ruimte er is
-        
+
         // Pompt 10% van premix (of wat er beschikbaar is, of wat er past)
         const te_pompen_percentage = Math.min(10, availableInPremix, ruimteInBeluchting);
         pumpAmount = (te_pompen_percentage / 100) * maxKg;
@@ -80,7 +80,7 @@ function updateBiscoffL23() {
         // Na pompen
         voorraadPremix = Math.max(0, voorraadPremix - pumpAmount);
         voorraadBeluchting = Math.min(maxKg, voorraadBeluchting + pumpAmount);
-        
+
         console.log(`Debug NA pompen: voorraadPremix=${voorraadPremix}kg, voorraadBeluchting=${voorraadBeluchting}kg`);
     } else {
         console.log(`Debug: Beluchtingstank ${beluchting}% >= 70%, geen pompen`);
@@ -116,7 +116,7 @@ function updateBiscoffL23() {
         // Premix leeg om - rekening houdend met pomplogica
         if (oorspronkelijkeVoorraadPremix > 0) {
             let effectievePremixVoorraad = oorspronkelijkeVoorraadPremix;
-            
+
             if (beluchting >= 70) {
                 // Beluchtingstank ≥ 70%, er wordt NIET gepompt
                 // Premix gaat normale snelheid leeg (alleen consumptie)
@@ -127,10 +127,10 @@ function updateBiscoffL23() {
                 effectievePremixVoorraad = oorspronkelijkeVoorraadPremix * 0.8; // 20% sneller door wegpompen
                 console.log(`Debug PREMIX TIJD: Beluchtingstank ${beluchting}% < 70%, WEL pompen → SNELLER leeg door wegpompen`);
             }
-            
+
             const premixMinuten = effectievePremixVoorraad * minutesPerKg;
             console.log(`Debug: effectievePremixVoorraad=${effectievePremixVoorraad}kg, premixMinuten=${premixMinuten}`);
-            
+
             let premixTotaalMinuten = uren * 60 + minuten + premixMinuten;
             let premixEindUur = Math.floor(premixTotaalMinuten / 60) % 24;
             let premixEindMin = Math.round(premixTotaalMinuten % 60);
