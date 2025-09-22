@@ -34,17 +34,28 @@
                     <div class="tank-fill" id="premixFill"></div>
                     <div class="tank-percentage" id="premixPercentage">50%</div>
                 </div>
+                <div class="tank-info-small">
+                    <span class="tank-info-label">Leeg om:</span>
+                    <span id="premixLeegTime" class="tank-info-time">--:--</span>
+                </div>
             </div>
 
             <form class="biscoff-form resultaten-box" onsubmit="return false;">
                 <h3 class="form-title">Invoergegevens</h3>
                 <div class="creme-selector">
-                    <label for="cremeType">Kies crème:</label>
+                    <label for="cremeType">Kies crème type:</label>
                     <select id="cremeType">
                         <option value="biscoff">Biscoff</option>
                         <option value="vanille">Vanille</option>
                         <option value="melkchocolade">Melkchocolade</option>
                     </select>
+                </div>
+
+                <div class="info-box">
+                    <div class="line-info">
+                        <span><strong id="currentLineSpan">L23</strong>: 1kg = <span id="minutesPerKg">0.28</span>
+                            minuten voorraad</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Vulgraad Premix-tank (%)</label>
@@ -81,11 +92,24 @@
 
             <div class="resultaten-box">
                 <h3>Resultaten</h3>
-                <div id="resultaten"></div>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <label>Totale voorraad:</label>
+                        <span id="totaleVoorraad" class="result-value">0 kg</span>
+                    </div>
+                    <div class="result-item">
+                        <label>Voorraad in minuten:</label>
+                        <span id="voorraadMinuten" class="result-value">0 min</span>
+                    </div>
+                    <div class="result-item">
+                        <label>Voorraad in uren:</label>
+                        <span id="voorraadUren" class="result-value">0:00</span>
+                    </div>
+                </div>
 
                 <div class="creme-tot-box">
                     <h3 style="color: white;">Crème Beschikbaar Tot:</h3>
-                    <div id="cremeTot" class="creme-tot-time"></div>
+                    <div id="cremeTot" class="creme-tot-time">--:--</div>
                 </div>
             </div>
 
