@@ -1,7 +1,7 @@
 // Biscoff L23 app - automatische berekening en visuele tanks
 function updateBiscoffL23() {
     const cremeType = document.getElementById('cremeType').value;
-    const currentLine = document.getElementById('currentLineSpan')?.textContent || 'L23';
+    const currentLine = document.getElementById('currentLine')?.textContent || 'L23';
 
     // Line specific data
     const lineData = {
@@ -11,11 +11,6 @@ function updateBiscoffL23() {
     };
 
     const minutesPerKg = lineData[currentLine]?.minutesPerKg || 0.28;
-
-    // Update display
-    if (document.getElementById('minutesPerKg')) {
-        document.getElementById('minutesPerKg').textContent = minutesPerKg;
-    }
 
     // Get input values
     const premixInput = document.getElementById('premix');
@@ -64,26 +59,23 @@ function updateBiscoffL23() {
     let pumpAmount = 0;
 
     // Pump logica: pompt als BELUCHTINGSTANK < 70% (niet premix!)
-    if (beluchting < 70) {
+    if (beluchting <= 70) { // <= zoals jij zei (meestal precies 70)
         premixWillPump = true;
-        // Pompt altijd 10% van premix over (als er genoeg is)
-        const availableInPremix = premix > 10 ? premix - 10 : 0; // Laatste 10% is onbruikbaar
-        const ruimteInBeluchting = 100 - beluchting; // Hoeveel % ruimte er is
+        const availableInPremix = premix > 10 ? premix - 10 : 0; // % boven de laatste 10%
+        const ruimteInBeluchting = 100 - beluchting;
 
-        // Pompt 10% van premix (of wat er beschikbaar is, of wat er past)
         const te_pompen_percentage = Math.min(10, availableInPremix, ruimteInBeluchting);
         pumpAmount = (te_pompen_percentage / 100) * maxKg;
 
-        console.log(`Debug PUMP: beluchting=${beluchting}% < 70%, pompt ${te_pompen_percentage}% (${pumpAmount}kg)`);
+        console.log(`Debug PUMP: beluchting=${beluchting}% <= 70%, pompt ${te_pompen_percentage}% (${pumpAmount}kg)`);
         console.log(`Debug VOOR pompen: voorraadPremix=${voorraadPremix}kg, voorraadBeluchting=${voorraadBeluchting}kg`);
 
-        // Na pompen
         voorraadPremix = Math.max(0, voorraadPremix - pumpAmount);
         voorraadBeluchting = Math.min(maxKg, voorraadBeluchting + pumpAmount);
 
         console.log(`Debug NA pompen: voorraadPremix=${voorraadPremix}kg, voorraadBeluchting=${voorraadBeluchting}kg`);
     } else {
-        console.log(`Debug: Beluchtingstank ${beluchting}% >= 70%, geen pompen`);
+        console.log(`Debug: Beluchtingstank ${beluchting}% > 70%, geen pompen`);
     }
     // Totale voorraad berekening
     const totaleVoorraad = voorraadPremix + voorraadBeluchting + hoyers + verbreken;
@@ -396,11 +388,6 @@ window.addEventListener('DOMContentLoaded', () => {
             currentLineSpan.style.opacity = '0.5';
             setTimeout(async () => {
                 currentLineSpan.textContent = selectedLine;
-                // Also update the span in the info box
-                const currentLineSpanInfo = document.getElementById('currentLineSpan');
-                if (currentLineSpanInfo) {
-                    currentLineSpanInfo.textContent = selectedLine;
-                }
                 currentLineSpan.style.opacity = '1';
 
                 // Update calculations with new line data
@@ -429,6 +416,24 @@ window.addEventListener('DOMContentLoaded', () => {
             // Positioneer de background correct
             updateSwitchBackground(savedButton);
         }
+    }
+
+    // Collapsible weights section functionality
+    const weightsToggle = document.getElementById('weightsToggle');
+    const weightsContent = document.getElementById('weightsContent');
+
+    if (weightsToggle && weightsContent) {
+        weightsToggle.addEventListener('click', function () {
+            const isActive = weightsContent.classList.contains('active');
+
+            if (isActive) {
+                weightsContent.classList.remove('active');
+                weightsToggle.classList.remove('active');
+            } else {
+                weightsContent.classList.add('active');
+                weightsToggle.classList.add('active');
+            }
+        });
     }
 
     // Initialisatie met Firebase data loading

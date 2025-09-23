@@ -585,3 +585,149 @@ input[type="text"] {
     pointer-events: none;
     transition: color 0.3s ease;
 }
+
+/* Collapsible Section Styles */
+.collapsible-section {
+    margin: 1rem 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.collapsible-toggle {
+    width: 100%;
+    padding: 1rem;
+    background: #f8f9fa;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.collapsible-toggle:hover {
+    background: #e9ecef;
+}
+
+.toggle-arrow {
+    transition: transform 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.collapsible-toggle.active .toggle-arrow {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: #fff;
+}
+
+.collapsible-content.active {
+    max-height: 400px;
+    padding: 1rem;
+}
+
+/* Contact Badge Styles - Lotus Theme */
+.contact-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(178, 34, 34, 0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: rgba(178, 34, 34, 0.6);
+    font-size: 0.85rem;
+    z-index: 1000;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(178, 34, 34, 0.2);
+    box-shadow: 0 4px 15px rgba(178, 34, 34, 0.1);
+    max-width: 250px;
+}
+
+.contact-badge:hover {
+    background: rgba(178, 34, 34, 0.95);
+    color: white;
+    border: 1px solid rgba(178, 34, 34, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(178, 34, 34, 0.3);
+}
+
+.badge-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.made-by {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: inherit;
+    text-align: center;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(178, 34, 34, 0.3);
+    transition: border-color 0.4s ease;
+}
+
+.contact-badge:hover .made-by {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.contact-name {
+    font-weight: 500;
+    color: inherit;
+}
+
+.contact-phone,
+.contact-email {
+    font-size: 0.8rem;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.8;
+    transition: opacity 0.4s ease;
+}
+
+.contact-badge:hover .contact-phone,
+.contact-badge:hover .contact-email {
+    opacity: 1;
+}
+
+/* Responsive behavior for smaller screens */
+@media (max-width: 768px) {
+    .contact-badge {
+        bottom: 10px;
+        right: 10px;
+        font-size: 0.75rem;
+        padding: 10px 12px;
+        max-width: 200px;
+        background: rgba(178, 34, 34, 0.2);
+    }
+
+    .contact-badge:hover {
+        background: rgba(178, 34, 34, 0.9);
+    }
+
+    .made-by {
+        font-size: 0.8rem;
+    }
+
+    .contact-phone,
+    .contact-email {
+        font-size: 0.7rem;
+    }
+}
