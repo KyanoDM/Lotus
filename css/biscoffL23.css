@@ -104,7 +104,7 @@ main {
 }
 
 .creme-selector {
-    margin-bottom: 1.8rem;
+    margin-bottom: 0.8rem;
     font-size: 1.4rem;
 }
 
@@ -114,7 +114,7 @@ main {
     border: 2px solid #d2691e;
     background-color: #fff;
     font-size: 1.2rem;
-    margin-left: 0.6rem;
+
     cursor: pointer;
     appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d2691e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -456,7 +456,7 @@ svg {
 
 input[type="number"],
 input[type="text"] {
-    width: 100%;
+    width: 95%;
     padding: 0.8rem;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -505,7 +505,6 @@ input[type="text"] {
     color: white;
     width: 100%;
     padding: 12px;
-    margin-top: 8px;
     font-size: 1.2rem;
 }
 
@@ -631,7 +630,21 @@ input[type="text"] {
 
 .collapsible-content.active {
     max-height: 400px;
-    padding: 1rem;
+    padding: 1.5rem;
+}
+
+/* Specific styling for form groups inside collapsible content */
+.collapsible-content .form-group {
+    margin-bottom: 1.2rem;
+}
+
+.collapsible-content .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.collapsible-content input[type="number"] {
+    width: 90%;
+    max-width: 300px;
 }
 
 /* Contact Badge Styles - Lotus Theme */
