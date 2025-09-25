@@ -199,13 +199,13 @@ function resetAllFields() {
 function setCurrentTime() {
     const tijdInput = document.getElementById('tijdNu');
     tijdInput.value = getCurrentTime();
-    
+
     // Trigger change event manually to ensure auto-save works
     tijdInput.dispatchEvent(new Event('change'));
-    
+
     // Update calculations
     updateBiscoffL23();
-    
+
     // Explicit save to Firebase with error handling
     setTimeout(() => {
         saveToFirebase().catch(error => {
