@@ -197,10 +197,21 @@ function resetAllFields() {
 
 // Vul huidige tijd in
 function setCurrentTime() {
-    document.getElementById('tijdNu').value = getCurrentTime();
+    const tijdInput = document.getElementById('tijdNu');
+    tijdInput.value = getCurrentTime();
+    
+    // Trigger change event manually to ensure auto-save works
+    tijdInput.dispatchEvent(new Event('change'));
+    
+    // Update calculations
     updateBiscoffL23();
-    // Save to Firebase when time is set
-    saveToFirebase();
+    
+    // Explicit save to Firebase with error handling
+    setTimeout(() => {
+        saveToFirebase().catch(error => {
+            console.error('Error saving time to Firebase:', error);
+        });
+    }, 100);
 }
 
 // Validatie functie voor vulgraad inputs
